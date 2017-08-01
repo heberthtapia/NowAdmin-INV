@@ -129,12 +129,21 @@ function displaySection(p, sec, id){
 					});
 				});
 			}
-			if(data.tabla === 'inventario'){
+			if(data.tabla === 'repuesto'){
 				//fnClickAddRowU(data,true);
 				$('#datos_ajax').html('<div class="alert alert-success" role="alert"><strong>Guardado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
 					$('#datos_ajax').fadeOut(2000,function () {
 						$('#dataRegister').modal('hide').delay(7000);
-						despliega('modulo/almacen/listTabla.php','listTabla');
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
+			if(data.tabla === 'sucursal'){
+				//fnClickAddRowU(data,true);
+				$('#datos_ajax').html('<div class="alert alert-success" role="alert"><strong>Guardado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax').fadeOut(2000,function () {
+						$('#dataRegister').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
 					});
 				});
 			}
@@ -214,11 +223,11 @@ function updateForm(idForm, p){
 					});
 				});
 			}
-			if(data.tabla === 'inventario'){
+			if(data.tabla === 'repuesto'){
 				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Modificado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
 					$('#datos_ajax_update').fadeOut(2000,function () {
 						$('#dataUpdate').modal('hide').delay(7000);
-						despliega('modulo/almacen/listTabla.php','listTabla');
+						displaySection('listTabla.php','unseen');
 					});
 				});
 			}
@@ -248,12 +257,20 @@ function updateForm(idForm, p){
 function fDelete(idForm, p){
 	var dato = JSON.stringify( $('#'+idForm).serializeObject() );
 	$.ajax({
-		url: "modulo/"+p,
+		url: p,
 		type: 'post',
 		dataType: 'json',
 		async:false,
 		data:{res:dato},
 		success: function(data){
+			if(data.tabla === 'repuesto'){
+				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_update').fadeOut(2000,function () {
+						$('#dataDelete').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
 			if(data.tabla === 'cliente'){
 				$('#dataDelete').modal('hide');
 				$('#dataDeleteCli').modal('hide');
@@ -369,7 +386,7 @@ function idImg(mod){
  */
 function statusCli(id, status){
 	$.ajax({
-		url: 'inc/statusCli.php',
+		url: '../../inc/statusCli.php',
 		type: 'post',
 		async:true,
 		data: 'id='+id+'&status='+status,
@@ -379,6 +396,20 @@ function statusCli(id, status){
 	});
 }
 
+/**
+ *  STATUS SUCURSAL
+ */
+function statusSuc(id, status){
+	$.ajax({
+		url: '../../inc/statusSuc.php',
+		type: 'post',
+		async:true,
+		data: 'id='+id+'&status='+status,
+		success: function(data){
+
+		}
+	});
+}
 /**
  * MODULO PEDIDO
  * AGREGA PEDIDO

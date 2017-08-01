@@ -24,7 +24,7 @@
     <link href="../../assets/css/style.css" rel="stylesheet">
     <link href="../../assets/css/style-responsive.css" rel="stylesheet">
 
-    <link href="../../assets/css/table-responsive.css" rel="stylesheet">
+    <!-- <link href="../../assets/css/table-responsive.css" rel="stylesheet"> -->
 
     <link href="../../assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="../../assets/css/square/blue.css" rel="stylesheet">
@@ -216,8 +216,8 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-            <h1 class="avisos" align="center"><strong>EMPLEADOS</strong></h1>
-          	<h3><i class="fa fa-angle-right"></i> Lista de Empleados</h3>
+            <h1 class="avisos" align="center"><strong>INVENTARIO - REPUESTOS</strong></h1>
+          	<h3><i class="fa fa-angle-right"></i> Lista Repuestos</h3>
         <div class="row mt">
           <div class="col-lg-12">
             <div class="content-panel">
@@ -225,133 +225,73 @@
               <div class="pull-right"><br>
                   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dataRegister">
                       <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span>Agregar Empleado</span>
+                      <span>Agregar Repuesto</span>
                   </button>
               </div>
               <div class="clearfix"></div>
               <br>
               <section id="unseen">
-               <!--  <table id="tablaList" class="table table-striped table-bordered" cellspacing="0" width="100%"> -->
                 <table id="tablaList" class="table table-bordered table-striped table-condensed">
                   <thead>
                   <tr>
                       <th>Nº</th>
                       <th>Fecha</th>
-                      <th>Foto</th>
+                      <th># Parte</th>
                       <th>Nombre</th>
-                      <th>Ap. Paterno</th>
-                      <th>Ap. Materno</th>
-                      <th>Cargo</th>
+                      <th>Detalle</th>
+                      <th>Para Modelos</th>
+                      <th>Cantidad</th>
+                      <th>Precio Venta</th>
+                      <th>Precio Compra</th>
+                      <th>Almacenado Sucursal</th>
                       <th>Acciones</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?PHP
-                    $sql = "SELECT * ";
-                    $sql.= "FROM empleado AS e, usuario AS u ";
-                    $sql.= "WHERE e.id_empleado = u.id_empleado ";
-                    $sql.= "ORDER BY (e.dateReg) DESC ";
+                  $sql   = "SELECT r.id_repuesto, r.numParte, r.name, r.detail, r.fromRep, a.cantidad, r.priceSale, r.priceBuy, s.id_sucursal, s.nameSuc ";
+                  $sql  .= "FROM repuesto AS r, almacen AS a, sucursal AS s WHERE r.id_repuesto = a.id_repuesto ";
+                  $sql  .= "AND a.id_sucursal = s.id_sucursal ORDER BY (r.dateReg) DESC ";
 
-                    $cont = 1;
+                  $cont = 1;
 
-                    $srtQuery = $db->Execute($sql);
-                    if($srtQuery === false)
-                        die("failed");
+                  $srtQuery = $db->Execute($sql);
+                  if($srtQuery === false)
+                      die("failed");
 
-                    while( $row = $srtQuery->FetchRow()){
-                  ?>
+                  while( $row = $srtQuery->FetchRow()){
+
+                      ?>
                       <tr id="tb<?=$row[0]?>">
                           <td align="center"><?=$cont++;?></td>
-                          <td><?=$row['dateReg']?></td>
-                          <td align="center" width="10%">
-                              <?PHP
-                              if( $row['foto'] != '' )
-                              {
-                                  ?>
-                                  <img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/<?=($row['foto']);?>&amp;w=120&amp;h=80&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">
-
-                                  <?PHP
-                              }
-                              else{
-                                  ?>
-                                  <img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/sin_imagen.jpg&amp;w=120&amp;h=80&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">
-                                  <?PHP
-                              }
-                              ?>
-                          </td>
-                          <td><?=$row['nombre'];?></td>
-                          <td><?=$row['apP'];?></td>
-                          <td><?=$row['apM'];?></td>
-                          <td><?=$op->toSelect($row['cargo']);?></td>
-                          <td width="15%">
-                              <div class="btn-group">
-                                          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataPreview"
-                                                  data-foto="<?=$row['foto']?>"
-                                                  data-name="<?=$row['nombre']?>"
-                                                  data-paterno="<?=$row['apP']?>"
-                                                  data-materno="<?=$row['apM']?>"
-                                                  data-ci="<?=$row['id_empleado']?>"
-                                                  data-dep="<?=$row['depa']?>"
-                                                  data-dateNac="<?=$row['dateNac']?>"
-                                                  data-fono="<?=$row['phone']?>"
-                                                  data-celular="<?=$row['celular']?>"
-                                                  data-emailC="<?=$row['email']?>"
-                                                  data-cargo="<?=$row['cargo']?>"
-                                                  data-codUser="<?=$row['user']?>"
-                                                  data-password="<?=$row['pass']?>"
-                                                  data-addresC="<?=$row['direccion']?>"
-                                                  data-Nro="<?=$row['numero']?>"
-                                                  data-cx="<?=$row['coorX']?>"
-                                                  data-cy="<?=$row['coorY']?>"
-                                                  data-obser="<?=$row['obser']?>"
-                                          >
-                                            <i class='fa fa-external-link'></i>
-                                            <span>Vista Previa</span>
-                                          </button>
-
-                                          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataUpdate"
-                                                  data-foto="<?=$row['foto']?>"
-                                                  data-name="<?=$row['nombre']?>"
-                                                  data-paterno="<?=$row['apP']?>"
-                                                  data-materno="<?=$row['apM']?>"
-                                                  data-ci="<?=$row['id_empleado']?>"
-                                                  data-dep="<?=$row['depa']?>"
-                                                  data-dateNac="<?=$row['dateNac']?>"
-                                                  data-fono="<?=$row['phone']?>"
-                                                  data-celular="<?=$row['celular']?>"
-                                                  data-emailC="<?=$row['email']?>"
-                                                  data-cargo="<?=$row['cargo']?>"
-                                                  data-codUser="<?=$row['user']?>"
-                                                  data-password="<?=$row['pass']?>"
-                                                  data-addresC="<?=$row['direccion']?>"
-                                                  data-Nro="<?=$row['numero']?>"
-                                                  data-cx="<?=$row['coorX']?>"
-                                                  data-cy="<?=$row['coorY']?>"
-                                                  data-obser="<?=$row['obser']?>"
-                                          >
-                                            <i class='fa fa-pencil-square-o '></i>
-                                            <span>Modificar</span>
-                                          </button>
-                              </div>
-                              <div style="margin-top: 5px">
-                                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#dataDelete" data-id="<?=$row['id_empleado']?>"  ><i class='glyphicon glyphicon-trash'></i> Eliminar
+                          <td align="center"><?=$row['dateReg']?></td>
+                          <td align="center"><?=$row['numParte'];?></td>
+                          <td align="center"><?=$row['name'];?></td>
+                          <td align="center"><?=$row['detail'];?></td>
+                          <td align="center"><?=$row['fromRep'];?></td>
+                          <td align="center"><?=$row['cantidad'];?></td>
+                          <td align="center"><?=$row['priceSale'];?></td>
+                          <td align="center"><?=$row['priceBuy'];?></td>
+                          <td align="center"><?=$row['nameSuc'];?></td>
+                          <td width="14%">
+                              <div class="btn-group" style="width: 171px">
+                                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataUpdate"
+                                      data-idResp     =   "<?=$row['id_repuesto']?>"
+                                      data-numParte   =   "<?=$row['numParte']?>"
+                                      data-name       =   "<?=$row['name']?>"
+                                      data-detail     =   "<?=$row['detail']?>"
+                                      data-fromRep    =   "<?=$row['fromRep']?>"
+                                      data-cantidad   =   "<?=$row['cantidad']?>"
+                                      data-priceSale  =   "<?=$row['priceSale']?>"
+                                      data-priceBuy   =   "<?=$row['priceBuy']?>"
+                                      data-idSuc      =   "<?=$row['id_sucursal']?>"
+                                      data-nameSuc    =   "<?=$row['nameSuc']?>">
+                                      <i class='glyphicon glyphicon-edit'></i> Modificar
                                   </button>
 
-                                  <div class="checkbox" id="status<?=$row['id_empleado']?>">
-                                          <?PHP
-                                          if( $row['statusEmp'] == 'Activo' ){
-                                          ?>
-                                              <input type="checkbox" name="checks" checked id="<?=$row['id_empleado']?>"/>
-                                              <label>Status</label>
-                                          <?PHP
-                                          }else{
-                                          ?>
-                                              <input type="checkbox" name="checks" id="<?=$row['id_empleado']?>"/>
-                                              <label>Status</label>
-                                          <?PHP
-                                          }
-                                          ?>
-                                  </div>
+                                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#dataDelete" data-id="<?=$row['id_repuesto']?>"  >
+                                      <i class='glyphicon glyphicon-trash'></i> Eliminar
+                                  </button>
                               </div>
                           </td>
                       </tr>
@@ -363,11 +303,14 @@
                   <tr>
                       <th>Nº</th>
                       <th>Fecha</th>
-                      <th>Foto</th>
+                      <th># Parte</th>
                       <th>Nombre</th>
-                      <th>Ap. Paterno</th>
-                      <th>Ap. Materno</th>
-                      <th>Cargo</th>
+                      <th>Detalle</th>
+                      <th>Para Modelos</th>
+                      <th>Cantidad</th>
+                      <th>Precio Venta</th>
+                      <th>Precio Compra</th>
+                      <th>Almacenado Sucursal</th>
                       <th>Acciones</th>
                   </tr>
                   </tfoot>
@@ -377,7 +320,7 @@
           </div><!-- /col-lg-4 -->
         </div><!-- /row -->
 
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->
@@ -406,7 +349,6 @@
     <script type="text/javascript" src="../../assets/js/dataTables.bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/jquery.json-2.3.js"></script>
     <script type="text/javascript" src="../../assets/js/jquery.form-validator.js"></script>
-
     <!--DatePicker-->
     <script type="text/javascript" src="../../assets/js/es-ES.js"></script>
     <script type="text/javascript" src="../../assets/js/moment.js"></script>
@@ -422,60 +364,60 @@
 
     <script type="text/javascript" src="../../assets/js/myJavaScript.js"></script>
 
-<script>
-  $(document).ready(function() {
-    $('#tablaList').DataTable({
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ filas por pagina",
-            "zeroRecords": "No se encontro nada - Lo siento",
-            "info": "Mostrando _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(Filtrada de _MAX_ registros en total)",
-            "search":         "Buscar:",
-            "paginate": {
-                "first":      "Primero",
-                "last":       "Ultimo",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-            }
-        },
-        "columnDefs": [
-            {
-                "targets": [ 1 ],
-                "visible": false,
-                "searchable": true
-            }
-        ]
-    });
+    <script>
+      $(document).ready(function() {
+        $('#tablaList').DataTable({
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ filas por pagina",
+                "zeroRecords": "No se encontro nada - Lo siento",
+                "info": "Mostrando _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrada de _MAX_ registros en total)",
+                "search":         "Buscar:",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": [ 1 ],
+                    "visible": false,
+                    "searchable": true
+                }
+            ]
+        });
 
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        //increaseArea: '100%' // optional
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+          //increaseArea: '100%' // optional
+        });
+
+        $('input:radio').on('ifChecked', function(event){
+            $('input:radio').validate();
+        });
+        $('input:radio').on('ifUnchecked',function(event){
+           //
+        });
+
+        $.validate({
+          lang: 'es',
+          modules : 'security'
+        });
       });
 
-    $('input').on('ifChecked', function(event){
-        id = $(this).attr('id');
-        statusEmp(id, 'Activo');
-    });
-    $('input').on('ifUnchecked',function(event){
-        id = $(this).attr('id');
-        statusEmp(id, 'Inactivo');
-    });
-  });
+      $('#obser').restrictLength( $('#max-length-element') );
 
-  $('#obser').restrictLength( $('#max-length-element') );
-
-  $('div#sidebar').find('a#empleado').addClass('active');
-</script>
-
-  <?PHP
-    include 'newEmpleado.php';
-    include 'editEmpleado.php';
-    include 'previewEmpleado.php';
-    include 'delEmpleado.php';
+      $('div#sidebar').find('a#repuesto').addClass('active');
+    </script>
+<?PHP
+    include 'newProducto.php';
+    include 'editProducto.php';
+    include 'delProducto.php';
   ?>
-
     <!--google maps-->
     <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIG-WEdvtbElIhE06jzL5Kk1QkFWCvymQ&force=lite"></script>
   </body>

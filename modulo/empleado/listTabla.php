@@ -15,56 +15,53 @@ $db = NewADOConnection('mysqli');
 $db->Connect();
 
 $op = new cnFunction();
+
 ?>
-<script type="text/javascript" language="javascript" class="init">
-
-    $(document).ready(function() {
-        $('#tablaList').DataTable({
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ filas por pagina",
-                "zeroRecords": "No se encontro nada - Lo siento",
-                "info": "Mostrando _PAGE_ de _PAGES_",
-                "infoEmpty": "No hay registros disponibles",
-                "infoFiltered": "(Filtrada de _MAX_ registros en total)",
-                "search":         "Buscar:",
-                "paginate": {
-                    "first":      "Primero",
-                    "last":       "Ultimo",
-                    "next":       "Siguiente",
-                    "previous":   "Anterior"
-                }
-            },
-            "columnDefs": [
-                {
-                    "targets": [ 1 ],
-                    "visible": false,
-                    "searchable": false
-                }
-            ]
-        });
-
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            //increaseArea: '100%' // optional
-          });
-
-        $('input').on('ifChecked', function(event){
-            id = $(this).attr('id');
-            statusEmp(id, 'Activo');
-        });
-        $('input').on('ifUnchecked',function(event){
-            id = $(this).attr('id');
-            statusEmp(id, 'Inactivo');
-        });
-
+<script>
+  $(document).ready(function() {
+    $('#tablaList').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ filas por pagina",
+            "zeroRecords": "No se encontro nada - Lo siento",
+            "info": "Mostrando _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(Filtrada de _MAX_ registros en total)",
+            "search":         "Buscar:",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Ultimo",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            }
+        },
+        "columnDefs": [
+            {
+                "targets": [ 1 ],
+                "visible": false,
+                "searchable": true
+            }
+        ]
     });
-    $.validate({
-        lang: 'es',
-        modules : 'security',
-        modules : 'modules/logic'
+
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        //increaseArea: '100%' // optional
+      });
+
+    $('input').on('ifChecked', function(event){
+        id = $(this).attr('id');
+        statusEmp(id, 'Activo');
     });
-    $('#obser').restrictLength( $('#max-length-element') );
+    $('input').on('ifUnchecked',function(event){
+        id = $(this).attr('id');
+        statusEmp(id, 'Inactivo');
+    });
+  });
+
+  $('#obser').restrictLength( $('#max-length-element') );
+
+  $('div#sidebar').find('a#empleado').addClass('active');
 </script>
 <table id="tablaList" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>

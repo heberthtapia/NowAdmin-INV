@@ -8,8 +8,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
-                    <input type="hidden" id="tabla" name="tabla" value="empleado">
-                    <div class="alert alert-warning" role="alert"><p><strong>Advertencia!</strong> está seguro que desea eliminar el empleado </p></div>
+                    <input type="hidden" id="tabla" name="tabla" value="repuesto">
+                    <div class="alert alert-warning" role="alert"><p><strong>Advertencia!</strong> está seguro que desea eliminar el producto </p></div>
 
                 </div>
                 <div class="modal-footer">

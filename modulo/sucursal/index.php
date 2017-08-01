@@ -24,7 +24,7 @@
     <link href="../../assets/css/style.css" rel="stylesheet">
     <link href="../../assets/css/style-responsive.css" rel="stylesheet">
 
-    <link href="../../assets/css/table-responsive.css" rel="stylesheet">
+    <!-- <link href="../../assets/css/table-responsive.css" rel="stylesheet"> -->
 
     <link href="../../assets/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="../../assets/css/square/blue.css" rel="stylesheet">
@@ -216,8 +216,8 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-            <h1 class="avisos" align="center"><strong>EMPLEADOS</strong></h1>
-          	<h3><i class="fa fa-angle-right"></i> Lista de Empleados</h3>
+            <h1 class="avisos" align="center"><strong>SUCURSALES</strong></h1>
+          	<h3><i class="fa fa-angle-right"></i> Lista Sucursales</h3>
         <div class="row mt">
           <div class="col-lg-12">
             <div class="content-panel">
@@ -225,132 +225,69 @@
               <div class="pull-right"><br>
                   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dataRegister">
                       <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span>Agregar Empleado</span>
+                      <span>Agregar Sucursal</span>
                   </button>
               </div>
               <div class="clearfix"></div>
               <br>
               <section id="unseen">
-               <!--  <table id="tablaList" class="table table-striped table-bordered" cellspacing="0" width="100%"> -->
                 <table id="tablaList" class="table table-bordered table-striped table-condensed">
                   <thead>
                   <tr>
                       <th>Nº</th>
                       <th>Fecha</th>
-                      <th>Foto</th>
                       <th>Nombre</th>
-                      <th>Ap. Paterno</th>
-                      <th>Ap. Materno</th>
-                      <th>Cargo</th>
+                      <th>Dirección</th>
                       <th>Acciones</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?PHP
-                    $sql = "SELECT * ";
-                    $sql.= "FROM empleado AS e, usuario AS u ";
-                    $sql.= "WHERE e.id_empleado = u.id_empleado ";
-                    $sql.= "ORDER BY (e.dateReg) DESC ";
+                  $sql   = "SELECT * ";
+                  $sql  .= "FROM sucursal ";
 
-                    $cont = 1;
+                  $cont = 1;
 
-                    $srtQuery = $db->Execute($sql);
-                    if($srtQuery === false)
-                        die("failed");
+                  $srtQuery = $db->Execute($sql);
+                  if($srtQuery === false)
+                      die("failed");
 
-                    while( $row = $srtQuery->FetchRow()){
-                  ?>
+                  while( $row = $srtQuery->FetchRow()){
+
+                      ?>
                       <tr id="tb<?=$row[0]?>">
                           <td align="center"><?=$cont++;?></td>
-                          <td><?=$row['dateReg']?></td>
-                          <td align="center" width="10%">
-                              <?PHP
-                              if( $row['foto'] != '' )
-                              {
-                                  ?>
-                                  <img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/<?=($row['foto']);?>&amp;w=120&amp;h=80&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">
-
-                                  <?PHP
-                              }
-                              else{
-                                  ?>
-                                  <img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/sin_imagen.jpg&amp;w=120&amp;h=80&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">
-                                  <?PHP
-                              }
-                              ?>
-                          </td>
-                          <td><?=$row['nombre'];?></td>
-                          <td><?=$row['apP'];?></td>
-                          <td><?=$row['apM'];?></td>
-                          <td><?=$op->toSelect($row['cargo']);?></td>
-                          <td width="15%">
-                              <div class="btn-group">
-                                          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataPreview"
-                                                  data-foto="<?=$row['foto']?>"
-                                                  data-name="<?=$row['nombre']?>"
-                                                  data-paterno="<?=$row['apP']?>"
-                                                  data-materno="<?=$row['apM']?>"
-                                                  data-ci="<?=$row['id_empleado']?>"
-                                                  data-dep="<?=$row['depa']?>"
-                                                  data-dateNac="<?=$row['dateNac']?>"
-                                                  data-fono="<?=$row['phone']?>"
-                                                  data-celular="<?=$row['celular']?>"
-                                                  data-emailC="<?=$row['email']?>"
-                                                  data-cargo="<?=$row['cargo']?>"
-                                                  data-codUser="<?=$row['user']?>"
-                                                  data-password="<?=$row['pass']?>"
-                                                  data-addresC="<?=$row['direccion']?>"
-                                                  data-Nro="<?=$row['numero']?>"
-                                                  data-cx="<?=$row['coorX']?>"
-                                                  data-cy="<?=$row['coorY']?>"
-                                                  data-obser="<?=$row['obser']?>"
-                                          >
-                                            <i class='fa fa-external-link'></i>
-                                            <span>Vista Previa</span>
-                                          </button>
-
-                                          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataUpdate"
-                                                  data-foto="<?=$row['foto']?>"
-                                                  data-name="<?=$row['nombre']?>"
-                                                  data-paterno="<?=$row['apP']?>"
-                                                  data-materno="<?=$row['apM']?>"
-                                                  data-ci="<?=$row['id_empleado']?>"
-                                                  data-dep="<?=$row['depa']?>"
-                                                  data-dateNac="<?=$row['dateNac']?>"
-                                                  data-fono="<?=$row['phone']?>"
-                                                  data-celular="<?=$row['celular']?>"
-                                                  data-emailC="<?=$row['email']?>"
-                                                  data-cargo="<?=$row['cargo']?>"
-                                                  data-codUser="<?=$row['user']?>"
-                                                  data-password="<?=$row['pass']?>"
-                                                  data-addresC="<?=$row['direccion']?>"
-                                                  data-Nro="<?=$row['numero']?>"
-                                                  data-cx="<?=$row['coorX']?>"
-                                                  data-cy="<?=$row['coorY']?>"
-                                                  data-obser="<?=$row['obser']?>"
-                                          >
-                                            <i class='fa fa-pencil-square-o '></i>
-                                            <span>Modificar</span>
-                                          </button>
-                              </div>
-                              <div style="margin-top: 5px">
-                                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#dataDelete" data-id="<?=$row['id_empleado']?>"  ><i class='glyphicon glyphicon-trash'></i> Eliminar
+                          <td align="center"><?=$row['dateReg']?></td>
+                          <td align="center"><?=$row['nameSuc'];?></td>
+                          <td align="center"><?=$row['address'];?></td>
+                          <td width="14%">
+                              <div class="btn-group" style="width: 171px">
+                                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dataUpdate"
+                                      data-idSuc     =   "<?=$row['id_sucursal']?>"
+                                      data-nameSuc   =   "<?=$row['nameSuc']?>"
+                                      data-address   =   "<?=$row['address']?>">
+                                      <i class='glyphicon glyphicon-edit'></i> Modificar
                                   </button>
 
-                                  <div class="checkbox" id="status<?=$row['id_empleado']?>">
-                                          <?PHP
-                                          if( $row['statusEmp'] == 'Activo' ){
-                                          ?>
-                                              <input type="checkbox" name="checks" checked id="<?=$row['id_empleado']?>"/>
-                                              <label>Status</label>
-                                          <?PHP
+                                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#dataDelete" data-id="<?=$row['id_sucursal']?>"  >
+                                      <i class='glyphicon glyphicon-trash'></i> Eliminar
+                                  </button>
+                              </div>
+                              <div style="margin-top: 5px">
+                                  <div class="checkbox" id="status<?=$row['id_sucursal']?>">
+                                      <?PHP
+                                          if( $row['status'] == 'Activo' ){
+                                      ?>
+                                          <input type="checkbox" name="checks" checked id="<?=$row['id_sucursal']?>"/>
+                                          <label>Status</label>
+                                      <?PHP
                                           }else{
-                                          ?>
-                                              <input type="checkbox" name="checks" id="<?=$row['id_empleado']?>"/>
-                                              <label>Status</label>
-                                          <?PHP
+                                      ?>
+                                          <input type="checkbox" name="checks" id="<?=$row['id_sucursal']?>"/>
+                                          <label>Status</label>
+                                      <?PHP
                                           }
-                                          ?>
+                                      ?>
                                   </div>
                               </div>
                           </td>
@@ -360,16 +297,13 @@
                   ?>
                   </tbody>
                   <tfoot>
-                  <tr>
-                      <th>Nº</th>
-                      <th>Fecha</th>
-                      <th>Foto</th>
-                      <th>Nombre</th>
-                      <th>Ap. Paterno</th>
-                      <th>Ap. Materno</th>
-                      <th>Cargo</th>
-                      <th>Acciones</th>
-                  </tr>
+                    <tr>
+                        <th>Nº</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
                   </tfoot>
                 </table>
               </section>
@@ -377,7 +311,7 @@
           </div><!-- /col-lg-4 -->
         </div><!-- /row -->
 
-		</section><! --/wrapper -->
+		</section><!--/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
       <!--main content end-->
@@ -406,7 +340,6 @@
     <script type="text/javascript" src="../../assets/js/dataTables.bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/jquery.json-2.3.js"></script>
     <script type="text/javascript" src="../../assets/js/jquery.form-validator.js"></script>
-
     <!--DatePicker-->
     <script type="text/javascript" src="../../assets/js/es-ES.js"></script>
     <script type="text/javascript" src="../../assets/js/moment.js"></script>
@@ -422,60 +355,69 @@
 
     <script type="text/javascript" src="../../assets/js/myJavaScript.js"></script>
 
-<script>
-  $(document).ready(function() {
-    $('#tablaList').DataTable({
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ filas por pagina",
-            "zeroRecords": "No se encontro nada - Lo siento",
-            "info": "Mostrando _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(Filtrada de _MAX_ registros en total)",
-            "search":         "Buscar:",
-            "paginate": {
-                "first":      "Primero",
-                "last":       "Ultimo",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-            }
-        },
-        "columnDefs": [
-            {
-                "targets": [ 1 ],
-                "visible": false,
-                "searchable": true
-            }
-        ]
-    });
+    <script>
+      $(document).ready(function() {
+        $('#tablaList').DataTable({
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ filas por pagina",
+                "zeroRecords": "No se encontro nada - Lo siento",
+                "info": "Mostrando _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrada de _MAX_ registros en total)",
+                "search":         "Buscar:",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": [ 1 ],
+                    "visible": false,
+                    "searchable": true
+                }
+            ]
+        });
 
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        //increaseArea: '100%' // optional
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+          //increaseArea: '100%' // optional
+        });
+
+        $('input:radio').on('ifChecked', function(event){
+            $('input:radio').validate();
+        });
+        $('input:radio').on('ifUnchecked',function(event){
+           //
+        });
+
+        $('input:checkbox').on('ifChecked', function(event){
+            id = $(this).attr('id');
+            statusSuc(id, 'Activo');
+        });
+        $('input:checkbox').on('ifUnchecked',function(event){
+            id = $(this).attr('id');
+            statusSuc(id, 'Inactivo');
+        });
+
+        $.validate({
+          lang: 'es',
+          modules : 'security'
+        });
       });
 
-    $('input').on('ifChecked', function(event){
-        id = $(this).attr('id');
-        statusEmp(id, 'Activo');
-    });
-    $('input').on('ifUnchecked',function(event){
-        id = $(this).attr('id');
-        statusEmp(id, 'Inactivo');
-    });
-  });
+      $('#obser').restrictLength( $('#max-length-element') );
 
-  $('#obser').restrictLength( $('#max-length-element') );
-
-  $('div#sidebar').find('a#empleado').addClass('active');
-</script>
-
-  <?PHP
-    include 'newEmpleado.php';
-    include 'editEmpleado.php';
-    include 'previewEmpleado.php';
-    include 'delEmpleado.php';
+      $('div#sidebar').find('a#sucursal').addClass('active');
+    </script>
+<?PHP
+    include 'newSucursal.php';
+    include 'editSucursal.php';
+    include 'delSucursal.php';
   ?>
-
     <!--google maps-->
     <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIG-WEdvtbElIhE06jzL5Kk1QkFWCvymQ&force=lite"></script>
   </body>

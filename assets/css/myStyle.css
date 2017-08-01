@@ -139,3 +139,12 @@ input#codUser, input#codUserU, input#password, input#passwordU, input#email, inp
     text-transform: capitalize;
     vertical-align: middle;
 }
+#error-container, #error-container1 {
+    margin-left: 114px;
+}
+.iradio_square-blue span{
+	margin-top: 25px;
+}
+section#unseen{
+	min-height: 300px
+}

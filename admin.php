@@ -13,14 +13,14 @@ session_start();
   $inactivo = 900;
 
   if( isset($_SESSION['tiempo']) && isset($_SESSION['idEmp']) ) {
-    echo $vida_session = time() - $_SESSION['tiempo'];
+    $vida_session = time() - $_SESSION['tiempo'];
         if($vida_session > $inactivo){
             session_destroy();
             header("Location: index.php");
         }else{
-          echo "time_elapsed_B: ".$op->time_elapsed_B(time()-$_SESSION['tiempo'])."\n";
+          //echo "time_elapsed_B: ".$op->time_elapsed_B(time()-$_SESSION['tiempo'])."\n";
           $nowTime = $_SESSION['tiempo'] = time();
-          $strQuery = 'UPDATE usuario SET status = "Inactivo", timeReg = "'.$nowTime.'" WHERE id_usuario = "'.$row['id_usuario'].'"';
+          $strQuery = 'UPDATE usuario SET status = "Inactivo", timeReg = "'.$nowTime.'" WHERE id_empleado = "'.$_SESSION['idEmp'].'"';
           $str = $db->Execute($strQuery);
         }
   }else{
@@ -236,7 +236,7 @@ session_start();
               	  <h5 class="centered">Marcel Newman</h5>
 
                   <li class="mt">
-                      <a class="active" href="../../admin.php">
+                      <a class="active" href="admin.php">
                           <i class="fa fa-dashboard"></i>
                           <span>Tablero</span>
                       </a>
@@ -244,15 +244,35 @@ session_start();
 
                   <li class="sub-menu">
                       <a href="javascript:;" >
-                          <i class="fa fa-desktop"></i>
-                          <span>Empleados</span>
+                          <i class="fa fa-wrench"></i>
+                          <span>Repuestos</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="modulo/empleado/">Lista de Empleados</a></li>
+                          <li><a  href="modulo/repuesto/">Lista Repuestos</a></li>
                       </ul>
                   </li>
 
                   <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-users"></i>
+                          <span>Empleados</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="modulo/empleado/">Lista Empleados</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a id="empleado" href="javascript:;" >
+                          <i class="fa fa-home"></i>
+                          <span>Sucursales</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="modulo/sucursal/">Lista Sucursales</a></li>
+                      </ul>
+                  </li>
+
+                  <!-- <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-desktop"></i>
                           <span>UI Elements</span>
@@ -314,7 +334,7 @@ session_start();
                           <li><a  href="morris.html">Morris</a></li>
                           <li><a  href="chartjs.html">Chartjs</a></li>
                       </ul>
-                  </li>
+                  </li> -->
 
               </ul>
               <!-- sidebar menu end-->
