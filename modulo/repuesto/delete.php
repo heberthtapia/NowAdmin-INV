@@ -20,8 +20,10 @@ $data = json_decode($data);
 
 //$q = "DELETE FROM repuesto AS r, almacen AS a WHERE r.id_repuesto = '".$data->id."' ";
 
-$sql = "DELETE repuesto, almacen FROM repuesto INNER JOIN almacen WHERE repuesto.id_repuesto = almacen.id_repuesto AND repuesto.id_repuesto = '".$data->id."' ";
+$sql = "DELETE repuesto, almacen FROM repuesto INNER JOIN almacen WHERE repuesto.id_repuesto = almacen.id_repuesto AND repuesto.id_repuesto = '".$data->id."'";
+$reg = $db->Execute($sql);
 
+$sql = "DELETE FROM foto WHERE id_repuesto = '".$data->id."' ";
 $reg = $db->Execute($sql);
 
 if($reg)

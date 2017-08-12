@@ -7,6 +7,11 @@
                     <h4 class="modal-title" id="exampleModalLabel">Eliminar Producto</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="datos_ajax_delete"></div>
+                        </div>
+                    </div>
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="tabla" name="tabla" value="empleado">
                     <div class="alert alert-warning" role="alert"><p><strong>Advertencia!</strong> está seguro que desea eliminar el empleado </p></div>

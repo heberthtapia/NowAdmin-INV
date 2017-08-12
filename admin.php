@@ -243,6 +243,16 @@ session_start();
                   </li>
 
                   <li class="sub-menu">
+                      <a id="categoria" href="javascript:;" >
+                          <i class="fa fa-th-list"></i>
+                          <span>Categorias</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="modulo/categoria/">Lista Categorias</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-wrench"></i>
                           <span>Repuestos</span>
@@ -579,7 +589,7 @@ session_start();
                   <div class="col-lg-3 ds">
                     <!--COMPLETED ACTIONS DONUTS CHART-->
 						<h3>NOTIFICACIONES</h3>
-
+                <div id="notification">
                       <!-- First Action -->
                       <div class="desc">
                       	<div class="thumb">
@@ -635,9 +645,11 @@ session_start();
                       		</p>
                       	</div>
                       </div>
-
+                </div>
                        <!-- USERS ONLINE SECTION -->
 						<h3>MIEMBROS DEL EQUIPO</h3>
+
+                <div id="equipo">
                       <!-- First Member -->
                       <div class="desc">
                       	<div class="thumb">
@@ -693,12 +705,12 @@ session_start();
                       		</p>
                       	</div>
                       </div>
-
+                </div>
                         <!-- CALENDAR-->
                         <div id="calendar" class="mb">
                             <div class="panel green-panel no-margin">
                                 <div class="panel-body">
-                                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+                                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 22%; margin-top: -100px; width: 175px;">
                                         <div class="arrow"></div>
                                         <h3 class="popover-title" style="disadding: none;"></h3>
                                         <div id="date-popover-content" class="popover-content"></div>
@@ -767,6 +779,20 @@ session_start();
 	</script>
 
 	<script type="application/javascript">
+
+        var eventData = [
+            {
+              "date":"2017-08-14",
+              "badge":true,
+              "title":"Tonight",
+              "body":"<p class=\"lead\">Party<\/p><p>Like it's 1999.<\/p>",
+              "footer":"At Paisley Park",
+              "classname":"purple-event"
+            },
+            {"date":"2017-08-07","badge":true,"title":"Example 1"},
+            {"date":"2017-08-25","badge":true,"title":"Example 2"}
+        ];
+
         $(document).ready(function () {
             $("#date-popover").popover({html: true, trigger: "manual"});
             $("#date-popover").hide();
@@ -775,6 +801,10 @@ session_start();
             });
 
             $("#my-calendar").zabuto_calendar({
+                cell_border: false,
+                today: true,
+                show_days: true,
+                weekstartson: 0,
                 action: function () {
                     return myDateFunction(this.id, false);
                 },
@@ -790,8 +820,23 @@ session_start();
                     {type: "block", label: "Regular event", }
                 ]
             });
+
         });
 
+        function myDateFunction(id, fromModal) {
+          $("#date-popover").hide();
+          if (fromModal) {
+              $("#" + id + "_modal").modal("hide");
+          }
+          var date = $("#" + id).data("date");
+          var hasEvent = $("#" + id).data("hasEvent");
+          if (hasEvent && !fromModal) {
+              return false;
+          }
+          $("#date-popover-content").html('You clicked on date ' + date);
+          $("#date-popover").show();
+          return true;
+        }
 
         function myNavFunction(id) {
             $("#date-popover").hide();

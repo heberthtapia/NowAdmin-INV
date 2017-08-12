@@ -14,6 +14,16 @@
             </li>
 
             <li class="sub-menu">
+                <a id="categoria" href="javascript:;" >
+                    <i class="fa fa-th-list"></i>
+                    <span>Categorias</span>
+                </a>
+                <ul class="sub">
+                    <li><a  href="../../modulo/categoria/">Lista Categorias</a></li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
                 <a id="repuesto" href="javascript:;" >
                     <i class="fa fa-wrench"></i>
                     <span>Repuestos</span>

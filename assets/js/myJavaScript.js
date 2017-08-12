@@ -58,6 +58,8 @@ function despliega(p, div, id){
 		}
 	});
 }
+
+
 /**
  * [displaySection despliega lista despues de guardar o actualizar]
  * @param  {[type]} p   [description]
@@ -139,6 +141,15 @@ function displaySection(p, sec, id){
 				});
 			}
 			if(data.tabla === 'sucursal'){
+				//fnClickAddRowU(data,true);
+				$('#datos_ajax').html('<div class="alert alert-success" role="alert"><strong>Guardado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax').fadeOut(2000,function () {
+						$('#dataRegister').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
+			if(data.tabla === 'categoria'){
 				//fnClickAddRowU(data,true);
 				$('#datos_ajax').html('<div class="alert alert-success" role="alert"><strong>Guardado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
 					$('#datos_ajax').fadeOut(2000,function () {
@@ -231,11 +242,27 @@ function updateForm(idForm, p){
 					});
 				});
 			}
+			if(data.tabla === 'sucursal'){
+				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Modificado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_update').fadeOut(2000,function () {
+						$('#dataUpdate').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
 			if(data.tabla === 'cliente'){
 				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Modificado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
 					$('#datos_ajax_update').fadeOut(2000,function () {
 						$('#dataUpdate').modal('hide').delay(7000);
 						despliega('modulo/cliente/listTabla.php','listTabla');
+					});
+				});
+			}
+			if(data.tabla === 'categoria'){
+				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Modificado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_update').fadeOut(2000,function () {
+						$('#dataUpdate').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
 					});
 				});
 			}
@@ -264,8 +291,32 @@ function fDelete(idForm, p){
 		data:{res:dato},
 		success: function(data){
 			if(data.tabla === 'repuesto'){
-				$('#datos_ajax_update').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
-					$('#datos_ajax_update').fadeOut(2000,function () {
+				$('#datos_ajax_delete').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_delete').fadeOut(2000,function () {
+						$('#dataDelete').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
+			if(data.tabla === 'empleado'){
+				$('#datos_ajax_delete').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_delete').fadeOut(2000,function () {
+						$('#dataDelete').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
+			if(data.tabla === 'sucursal'){
+				$('#datos_ajax_delete').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_delete').fadeOut(2000,function () {
+						$('#dataDelete').modal('hide').delay(7000);
+						displaySection('listTabla.php','unseen');
+					});
+				});
+			}
+			if(data.tabla === 'categoria'){
+				$('#datos_ajax_delete').html('<div class="alert alert-success" role="alert"><strong>Eliminado Correctamente!!!</strong></div><br>').fadeIn(4000,function () {
+					$('#datos_ajax_delete').fadeOut(2000,function () {
 						$('#dataDelete').modal('hide').delay(7000);
 						displaySection('listTabla.php','unseen');
 					});
@@ -334,11 +385,11 @@ function obtenerCoor(id){
  /* RECARGA IMAGEN */
 
  function recargaImg(img, mod){
-	$('#foto').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/'+mod+'/uploads/'+img+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
+	$('#foto').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/'+mod+'/uploads/files/'+img+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
 }
 
 function recargaImgU(img, mod){
-	$('#fotoU').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/'+mod+'/uploads/'+img+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
+	$('#fotoU').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/'+mod+'/uploads/files/'+img+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
 }
 
 function closeWebcam(){
@@ -351,21 +402,18 @@ function openWebcam(){
 	$('#save').attr('disabled', 'disabled');
 }
 
-function idImg(mod){
+function loadImg(mod, tabla){
 	$.ajax({
 		url: '../../inc/img.php',
 		type: 'post',
 		cache: false,
+		data: 'tabla='+tabla,
 		success: function(data){
 			recargaImg(data,mod);
 			recargaImgU(data,mod);
 		}
 	});
 }
-
-/**
- *  WEB CAM
- */
 
 /**
  * STATUS EMPLEADO
@@ -402,6 +450,36 @@ function statusCli(id, status){
 function statusSuc(id, status){
 	$.ajax({
 		url: '../../inc/statusSuc.php',
+		type: 'post',
+		async:true,
+		data: 'id='+id+'&status='+status,
+		success: function(data){
+
+		}
+	});
+}
+
+/**
+ *  STATUS REPUESTO
+ */
+function statusRep(id, status){
+	$.ajax({
+		url: '../../inc/statusRep.php',
+		type: 'post',
+		async:true,
+		data: 'id='+id+'&status='+status,
+		success: function(data){
+
+		}
+	});
+}
+
+/**
+ *  STATUS CATEGORIA
+ */
+function statusCat(id, status){
+	$.ajax({
+		url: '../../inc/statusCat.php',
 		type: 'post',
 		async:true,
 		data: 'id='+id+'&status='+status,
@@ -791,4 +869,130 @@ function pad (n, length) {
 		 n = "0" + n;
 	 }
 return n;
+}
+
+/**
+ * Guardar imagenes a la bd
+ */
+function saveImg(mod, name, size){
+	$.ajax({
+		url: '../../modulo/'+mod+'/uploadFile.php',
+		type: 'post',
+		async:false,
+		data:{
+			name: name,
+			size: size
+		},
+		success: function(data){
+			//return data;
+		}
+	});
+}
+
+/**
+ * cargas las imagenes en la op modificar
+ */
+
+function loadImages(mod, id){
+    var dato = JSON.stringify(id);
+    $.ajax({
+        url: '../../modulo/'+mod+'/loadImages.php',
+        type: 'post',
+        dataType: 'json',
+        cache: false,
+        data: 'id='+id,
+        beforeSend: function(data){
+           // $("#"+div).html('<div id="load" align="center" class="alert alert-success" role="alert"><p>Cargando contenido. Por favor, espere ...</p></div>');
+        },
+        success: function(data){
+        	var row = new Array();
+        	var sw = 0;
+        	var cont = data.num;
+        	i = 0;
+            $.each(data,function(index,contenido){
+            	j = 0;
+                $.each(contenido,function(index,valor){
+                	if(i >= cont){
+                		sw = 1;
+                	}
+                	if(sw == 1 && row[j] != ""){
+                		size = valor/1000;
+                		size = size.toFixed(2);
+	                    html = '<tr class="template-download fade in">'+
+	                    '<td><span class="preview">'+
+	                    '<a href="../../modulo/'+mod+'/uploads/files/'+row[j]+'" title="'+row[j]+'" download="'+row[j]+'" data-gallery=""><img src="../../modulo/'+mod+'/uploads/files/thumbnail/'+row[j]+'"></a>'+
+	                    '</span></td>'+
+	                    '<td><p class="name">'+
+	                    '<a href="../../modulo/'+mod+'/uploads/files/'+row[j]+'" title="'+row[j]+'" download="'+row[j]+'" data-gallery="">'+row[j]+'</a></p></td>'+
+	                    '<td><span class="size">'+size+' KB</span></td>'+
+	                    '<td>'+
+	                    '<button class="btn btn-danger btn-sm delete" data-type="DELETE" data-url="../../modulo/'+mod+'/uploads/index.php?file='+row[j]+'">'+
+	                    '<i class="fa fa-trash-o"></i>'+
+	                    '<span> Borrar</span>'+
+	                    '</button>'+
+	                    ' <input id="delete" name="delete" value="1" class="toggle" type="checkbox">'+
+	                    '</td>'
+	                    '</tr>';
+	                   	j++;
+	                    $("#loadImages tbody").append(html);
+	                }else{
+	                	row[i] = valor;
+	                }
+	                i++;
+                });
+            });
+        }
+    });
+}
+
+function loadImagesMulti(mod, id){
+    var dato = JSON.stringify(id);
+    $.ajax({
+        url: '../../modulo/'+mod+'/loadImages.php',
+        type: 'post',
+        dataType: 'json',
+        cache: false,
+        data: 'id='+id,
+        beforeSend: function(data){
+           // $("#"+div).html('<div id="load" align="center" class="alert alert-success" role="alert"><p>Cargando contenido. Por favor, espere ...</p></div>');
+        },
+        success: function(data){
+        	var row = new Array();
+        	var sw = 0;
+        	var cont = data.num;
+        	i = 0;
+            $.each(data,function(index,contenido){
+            	j = 0;
+                $.each(contenido,function(index,valor){
+                	if(i >= cont){
+                		sw = 1;
+                	}
+                	if(sw == 1){
+                		size = valor/1000;
+                		size = size.toFixed(2);
+	                    html = '<tr class="template-download fade in">'+
+	                    '<td><span class="preview">'+
+	                    '<a href="../../modulo/'+mod+'/uploads/files/'+row[j]+'" title="'+row[j]+'" download="'+row[j]+'" data-gallery=""><img src="../../modulo/'+mod+'/uploads/files/thumbnail/'+row[j]+'"></a>'+
+	                    '</span></td>'+
+	                    '<td><p class="name">'+
+	                    '<a href="../../modulo/'+mod+'/uploads/files/'+row[j]+'" title="'+row[j]+'" download="'+row[j]+'" data-gallery="">'+row[j]+'</a></p></td>'+
+	                    '<td><span class="size">'+size+' KB</span></td>'+
+	                    '<td>'+
+	                    '<button class="btn btn-danger btn-sm delete" data-type="DELETE" data-url="../../modulo/'+mod+'/uploads/index.php?file='+row[j]+'">'+
+	                    '<i class="fa fa-trash-o"></i>'+
+	                    '<span> Borrar</span>'+
+	                    '</button>'+
+	                    ' <input id="delete" name="delete" value="1" class="toggle" type="checkbox">'+
+	                    '</td>'
+	                    '</tr>';
+	                   	j++;
+	                    $("#loadImages tbody").append(html);
+	                }else{
+	                	row[i] = valor;
+	                }
+	                i++;
+                });
+            });
+        }
+    });
 }

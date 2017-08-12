@@ -36,6 +36,7 @@ $.fn.zabuto_calendar = function (options) {
         $calendarElement.data('showPrevious', opts.show_previous);
         $calendarElement.data('showNext', opts.show_next);
         $calendarElement.data('cellBorder', opts.cell_border);
+        $calendarElement.data('jsonData', opts.data);
         $calendarElement.data('ajaxSettings', opts.ajax);
         $calendarElement.data('legendList', opts.legend);
         $calendarElement.data('actionFunction', opts.action);
@@ -61,6 +62,11 @@ $.fn.zabuto_calendar = function (options) {
             $containerHtml.append($legendObj);
 
             $calendarElement.append($containerHtml);
+
+            var jsonData = $calendarElement.data('jsonData');
+            if (false !== jsonData) {
+                checkEvents($calendarElement, dateInitObj.getFullYear(), dateInitObj.getMonth());
+            }
         }
 
         function drawTable($calendarElement, $tableObj, year, month) {
@@ -137,8 +143,8 @@ $.fn.zabuto_calendar = function (options) {
 
         function appendMonthHeader($calendarElement, $tableObj, year, month) {
             var navIcons = $calendarElement.data('navIcons');
-            var $prevMonthNavIcon = $('<span><span class="fa fa-chevron-left text-transparent"></span></span>');
-            var $nextMonthNavIcon = $('<span><span class="fa fa-chevron-right text-transparent"></span></span>');
+            var $prevMonthNavIcon = $('<span><span class="glyphicon glyphicon-chevron-left"></span></span>');
+            var $nextMonthNavIcon = $('<span><span class="glyphicon glyphicon-chevron-right"></span></span>');
             if (typeof(navIcons) === 'object') {
                 if ('prev' in navIcons) {
                     $prevMonthNavIcon.html(navIcons.prev);
@@ -344,20 +350,36 @@ $.fn.zabuto_calendar = function (options) {
         /* ----- Event functions ----- */
 
         function checkEvents($calendarElement, year, month) {
+            var jsonData = $calendarElement.data('jsonData');
             var ajaxSettings = $calendarElement.data('ajaxSettings');
 
             $calendarElement.data('events', false);
 
-            if (ajaxSettings === false) {
-                return true;
+            if (false !== jsonData) {
+                return jsonEvents($calendarElement);
+            } else if (false !== ajaxSettings) {
+                return ajaxEvents($calendarElement, year, month);
             }
+
+            return true;
+        }
+
+        function jsonEvents($calendarElement) {
+            var jsonData = $calendarElement.data('jsonData');
+            $calendarElement.data('events', jsonData);
+            drawEvents($calendarElement, 'json');
+            return true;
+        }
+
+        function ajaxEvents($calendarElement, year, month) {
+            var ajaxSettings = $calendarElement.data('ajaxSettings');
 
             if (typeof(ajaxSettings) != 'object' || typeof(ajaxSettings.url) == 'undefined') {
                 alert('Invalid calendar event settings');
                 return false;
             }
 
-            var data = { year: year, month: (month + 1)};
+            var data = {year: year, month: (month + 1)};
 
             $.ajax({
                 type: 'GET',
@@ -365,16 +387,19 @@ $.fn.zabuto_calendar = function (options) {
                 data: data,
                 dataType: 'json'
             }).done(function (response) {
-                    var events = [];
-                    $.each(response, function (k, v) {
-                        events.push(response[k]);
-                    });
-                    $calendarElement.data('events', events);
-                    drawEvents($calendarElement);
+                var events = [];
+                $.each(response, function (k, v) {
+                    events.push(response[k]);
                 });
+                $calendarElement.data('events', events);
+                drawEvents($calendarElement, 'ajax');
+            });
+
+            return true;
         }
 
-        function drawEvents($calendarElement) {
+        function drawEvents($calendarElement, type) {
+            var jsonData = $calendarElement.data('jsonData');
             var ajaxSettings = $calendarElement.data('ajaxSettings');
 
             var events = $calendarElement.data('events');
@@ -404,7 +429,14 @@ $.fn.zabuto_calendar = function (options) {
                     }
 
                     if (typeof(value.body) !== 'undefined') {
-                        if ('modal' in ajaxSettings && (ajaxSettings.modal === true)) {
+                        var modalUse = false;
+                        if (type === 'json' && typeof(value.modal) !== 'undefined' && value.modal === true) {
+                            modalUse = true;
+                        } else if (type === 'ajax' && 'modal' in ajaxSettings && ajaxSettings.modal === true) {
+                            modalUse = true;
+                        }
+
+                        if (modalUse === true) {
                             $dowElement.addClass('event-clickable');
 
                             var $modalElement = createModal(id, value.title, value.body, value.footer);
@@ -531,6 +563,7 @@ $.fn.zabuto_calendar_defaults = function () {
         show_days: true,
         weekstartson: 1,
         nav_icon: false,
+        data: false,
         ajax: false,
         legend: false,
         action: false,
@@ -547,7 +580,7 @@ $.fn.zabuto_calendar_defaults = function () {
  */
 $.fn.zabuto_calendar_language = function (lang) {
     if (typeof(lang) == 'undefined' || lang === false) {
-        lang = 'es';
+        lang = 'en';
     }
 
     switch (lang.toLowerCase()) {
@@ -562,6 +595,13 @@ $.fn.zabuto_calendar_language = function (lang) {
             return {
                 month_labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                 dow_labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+            };
+            break;
+
+        case 'ar':
+            return {
+                month_labels: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+                dow_labels: ["أثنين", "ثلاثاء", "اربعاء", "خميس", "جمعه", "سبت", "أحد"]
             };
             break;
 
@@ -590,6 +630,48 @@ $.fn.zabuto_calendar_language = function (lang) {
             return {
                 month_labels: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
                 dow_labels: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
+            };
+            break;
+
+        case 'pl':
+            return {
+                month_labels: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+                dow_labels: ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."]
+            };
+            break;
+
+        case 'pt':
+            return {
+                month_labels: ["Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+                dow_labels: ["S", "T", "Q", "Q", "S", "S", "D"]
+            };
+            break;
+
+        case 'ru':
+            return {
+                month_labels: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                dow_labels: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вск"]
+            };
+            break;
+
+        case 'se':
+            return {
+                month_labels: ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
+                dow_labels: ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"]
+            };
+            break;
+
+        case 'tr':
+            return {
+                month_labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                dow_labels: ["Pts", "Salı", "Çar", "Per", "Cuma", "Cts", "Paz"]
+            };
+            break;
+
+        case 'fi':
+            return {
+                month_labels: ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu", "Heinäkuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"],
+                dow_labels: ["Ma", "Ti", "Ke", "To", "Pe", "La", "Su"]
             };
             break;
     }

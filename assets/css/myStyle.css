@@ -121,7 +121,7 @@ Camera slide up
     height: 220px;
     border: 1px #ccc solid;
 }
-div#foto img, div#fotoU img {
+div#foto img, div#fotoU img, div#fotoP img {
     padding: 3px;
     border: 1px solid #ccc;
 }
@@ -132,7 +132,7 @@ div#foto img, div#fotoU img {
 input {
     text-transform: capitalize;
 }
-input#codUser, input#codUserU, input#password, input#passwordU, input#email, input#emailU, input#username {
+input#codUser, input#codUserU, input#password, input#passwordU, input#email, input#emailU, input#emailP, input#username {
     text-transform: none;
 }
 #tablaList tbody tr td {
@@ -147,4 +147,33 @@ input#codUser, input#codUserU, input#password, input#passwordU, input#email, inp
 }
 section#unseen{
 	min-height: 300px
+}
+/****/
+.file-preview {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+.file-drop-zone {
+    border: 1px dashed #aaa;
+    border-radius: 4px;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    margin: 3px 15px 12px 12px;
+    padding: 5px;
+}
+.file-drop-zone-title {
+    color: #aaa;
+    font-size: 12px;
+    text-align: center;
+    /*padding: 85px 10px;*/
+    cursor: default;
+}
+.file-highlighted {
+    border: 2px dashed #999 !important;
+    background-color: #f0f0f0;
 }

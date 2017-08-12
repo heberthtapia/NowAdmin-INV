@@ -30,6 +30,36 @@
 
 	$sql = $db->Execute($strQuery);
 
+	/*********************ACTUALIZA FOTO Y ENVIANDO DATOS POR EMAIL*******************************/
+
+	//$data->img = '';
+
+	$strQuery = "SELECT * FROM auxImg ";
+
+	$srtQ = $db->Execute($strQuery);
+
+	if ($srtQ){
+		while($row = $srtQ->FetchRow()){
+			$name = $row['name'];
+			$size = $row['size'];
+
+			$strQuery = "INSERT INTO foto ( id_repuesto, name, size, dateReg, status ) ";
+			$strQuery.= "VALUES ( '".$data->idResp."', '".$name."', '".$size."', '".$data->date."', 'Activo' )";
+
+			$strQ = $db->Execute($strQuery);
+			//$data->img = $img;
+		}
+	}
+	if($data->checksEmail == 'on'){
+		//echo 'entra......';
+		//include '../../classes/envioData.php';
+	}
+	//print_r($data);
+	/***************************************************************************/
+
+	$sql = "TRUNCATE TABLE auxImg ";
+	$strQ = $db->Execute($sql);
+
 	if($sql)
 		echo json_encode($data);
 	else

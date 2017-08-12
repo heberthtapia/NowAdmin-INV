@@ -1411,6 +1411,7 @@ PANELS CONFIGURATIONS
 #calendar {
 	color: white;
 	padding: 0px !important;
+    position: relative;
 }
 .calendar-month-header {
 	background: #43b1a9;

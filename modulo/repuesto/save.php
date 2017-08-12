@@ -19,8 +19,8 @@
 
 	//$cargo = $op->toCargo($data->cargo);
 
-	$strQuery = "INSERT INTO repuesto ( numParte,  name, fromRep, priceSale, priceBuy, detail, dateReg, status ) ";
-	$strQuery.= "VALUES ('".$data->numParte."', '".$data->name."', '".$data->fromRep."','".$data->priceSale."','".$data->priceBuy."', ";
+	$strQuery = "INSERT INTO repuesto ( id_categoria, numParte,  name, fromRep, priceSale, priceBuy, detail, dateReg, status ) ";
+	$strQuery.= "VALUES ('".$data->categoria."', '".$data->numParte."', '".$data->name."', '".$data->fromRep."','".$data->priceSale."','".$data->priceBuy."', ";
 	$strQuery.= "'".$data->detail."', '".$data->date."', 'Activo' )";
 
 	$sql = $db->Execute($strQuery);
@@ -31,6 +31,36 @@
 	$strQuery.= "VALUES ('".$lastId."', '".$data->radioRep."', '".$data->cantidad."', '".$data->date."', 'Activo' )";
 
 	$sql = $db->Execute($strQuery);
+
+	/*********************ACTUALIZA FOTO Y ENVIANDO DATOS POR EMAIL*******************************/
+
+	//$data->img = '';
+
+	$strQuery = "SELECT * FROM auxImg ";
+
+	$srtQ = $db->Execute($strQuery);
+
+	if ($srtQ){
+		while($row = $srtQ->FetchRow()){
+			$name = $row['name'];
+			$size = $row['size'];
+
+			$strQuery = "INSERT INTO foto ( id_repuesto, name, size, dateReg, status ) "; 
+			$strQuery.= "VALUES ( '".$lastId."', '".$name."', '".$size."', '".$data->date."', 'Activo' )";
+
+			$strQ = $db->Execute($strQuery);
+			//$data->img = $img;
+		}
+	}
+	if($data->checksEmail == 'on'){
+		//echo 'entra......';
+		//include '../../classes/envioData.php';
+	}
+	//print_r($data);
+	/***************************************************************************/
+
+	$sql = "TRUNCATE TABLE auxImg ";
+	$strQ = $db->Execute($sql);
 
 	if($sql)
 		echo json_encode($data);

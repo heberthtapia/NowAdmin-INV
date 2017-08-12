@@ -67,9 +67,9 @@ $(document).ready(function(e) {
         modal.find('.modal-body #obserP').val(obser);
 
         if(foto !== ''){
-            modal.find('.modal-body #fotoP').html('<img class="thumb" src="thumb/phpThumb.php?src=../modulo/empleado/uploads/'+foto+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
+            modal.find('.modal-body #fotoP').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/files/'+foto+'&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
         }else {
-            modal.find('.modal-body #fotoP').html('<img class="thumb" src="thumb/phpThumb.php?src=../modulo/empleado/uploads/sin_imagen.jpg&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
+            modal.find('.modal-body #fotoP').html('<img class="thumb" src="../../thumb/phpThumb.php?src=../modulo/empleado/uploads/sin_imagen.jpg&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
         }
         //$('.alert').hide();//Oculto alert
     });
@@ -81,15 +81,7 @@ $(document).ready(function(e) {
 
     $('#dataPreview').on('hidden.bs.modal', function (e) {
         // do something...
-        $( "#mapaP" ).animate({
-            width: "0px"
-        }, 3000, "swing");
         $('#formPreview').get(0).reset();
-        $('.uploadShowU').css('display','none');
-        //$('#file_upload').uploadify('cancel', '*');
-        $('#saveU, #closeU').removeAttr('disabled','disabled');
-        $('#subirU').find('span').text("Subir Foto");
-        $('#fotoP').html('<img class="thumb" src="thumb/phpThumb.php?src=../modulo/empleado/uploads/sin_imagen.jpg&amp;w=120&amp;h=75&amp;far=1&amp;bg=FFFFFF&amp;hash=361c2f150d825e79283a1dcc44502a76" alt="">');
     });
 
 });
@@ -99,19 +91,6 @@ $(document).ready(function(e) {
     var markers = [];
     var marcadores_bd=[];
     var mapa = null; //VARIABLE GENERAL PARA EL MAPA
-
-    function openWebCam(){
-        openWebcam();//document.write( webcam.get_html(320, 240) );
-        webcam.set_api_url( 'modulo/empleado/uploadEmp.php' );
-        webcam.set_hook( 'onComplete', 'my_callback_function');
-    }
-    function my_callback_function(response) {
-        //alert("Success! PHP returned: " + response);
-        msg = $.parseJSON(response);
-        //alert(msg.filename);
-        //modificado
-        recargaImgU(msg.filename, 'empleado');
-    }
 
     function initMapU(){
         /* GOOGLE MAPS */
@@ -125,12 +104,9 @@ $(document).ready(function(e) {
             center:punto,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-
         mapa = new google.maps.Map( $("#mapaP")[0], config );
-
-
-    listarU();
-  }
+        listarU();
+    }
 
     //FUNCIONES PARA EL GOOGLE MAPS
 
@@ -422,22 +398,3 @@ $(document).ready(function(e) {
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </form>
-
-<div id="camera">
-    <span class="tooltip"></span>
-    <span class="camTop"></span>
-
-    <div id="screen"></div>
-    <div id="buttons">
-        <div class="buttonPane">
-            <a id="closeButton" onclick="closeWebcam()" class="btn btn-danger">Cerrar</a>
-            <a id="shootButton" href="" class="btn btn-primary">Capturar!</a>
-        </div>
-        <div class="buttonPane" style="display: none">
-            <a id="cancelButton" href="" class="btn btn-danger">Cancelar</a>
-            <a id="uploadButton" href="" class="btn btn-primary">Subir!</a>
-        </div>
-    </div>
-
-    <span class="settings"></span>
-</div>

@@ -268,10 +268,6 @@
                                       data-address   =   "<?=$row['address']?>">
                                       <i class='glyphicon glyphicon-edit'></i> Modificar
                                   </button>
-
-                                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#dataDelete" data-id="<?=$row['id_sucursal']?>"  >
-                                      <i class='glyphicon glyphicon-trash'></i> Eliminar
-                                  </button>
                               </div>
                               <div style="margin-top: 5px">
                                   <div class="checkbox" id="status<?=$row['id_sucursal']?>">
